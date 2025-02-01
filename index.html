@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Software Agency</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.1/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.1/ScrollToPlugin.min.js"></script>
+  <style>
+    :root {
+      --primary-color: #286789;
+      --secondary-color: #1baba6;
+      --light-background: #e5acff;
+      --dark-background: #2e2e2e;
+      --heading-font: 'Roboto', sans-serif;
+      --body-font: 'Times New Roman', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: var(--body-font);
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: var(--light-background);
+      overflow-x: hidden;
+      color: #333;
+    }
+
+    body.dark-mode {
+      background-color: var(--dark-background);
+      color: white;
+    }
+
+    nav {
+      width: 100%;
+      background: var(--primary-color);
+      padding: 1em 0;
+      text-align: center;
+    }
+
+    nav a {
+      color: #f5f5f5;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    body.dark-mode nav {
+      background: var(--secondary-color);
+    }
+
+    .theme-toggle {
+      background: none;
+      border: none;
+      color: #f5f5f5;
+      font-size: 1.5rem;
+      cursor: pointer;
+      margin-top: 1em;
+    }
+
+    body.dark-mode .theme-toggle {
+      color: #f5f5f5;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0a2cd8, #F07BE8);
+      color: rgb(6, 5, 5);
+      width: 100%;
+      padding: 3em 1em;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(204, 140, 140, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    body.dark-mode header {
+      background: linear-gradient(135deg, #1f3b6d, #8b3fa5);
+    }
+
+    header h1 {
+      font-size: 3rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      margin-top: 0.5em;
+      position: relative;
+      z-index: 2;
+    }
+
+    .cta-button {
+      display: inline-block;
+      background-color: #ffffff;
+      color: var(--secondary-color);
+      padding: 0.8em 2em;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 1em;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    body.dark-mode .cta-button {
+      background-color: #333;
+      color: white;
+    }
+
+    header::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.2) 10%, transparent 70%);
+      animation: rotateBg 10s linear infinite;
+    }
+
+    @keyframes rotateBg {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(162deg); }
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5em;
+      width: 100%;
+      max-width: 1100px;
+      justify-content: center;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.705);
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 2em;
+      text-align: center;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    body.dark-mode .card {
+      background: rgba(50, 50, 50, 0.8);
+      color: white;
+      border: 1px solid #fff;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h2 {
+      font-size: 1.8rem;
+      margin-bottom: 0.5em;
+    }
+
+    body.dark-mode .card h2 {
+      color: white;
+    }
+
+    .card p {
+      color: #666;
+      margin-top: 0.5em;
+    }
+
+    body.dark-mode .card p {
+      color: white;
+    }
+
+    section#services, section#projects, section#contact {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      text-align: center;
+      padding: 4em 1em;
+      width: 100%;
+    }
+
+    body.dark-mode section#services, body.dark-mode section#projects, body.dark-mode section#contact {
+      background-color: #333;
+    }
+
+    section#services h1, section#projects h1, section#contact h1 {
+      font-size: 3.5rem; 
+      margin-bottom: 1em;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .contact-form input, .contact-form textarea {
+      padding: 1em;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      width: 100%;
+    }
+
+    body.dark-mode .contact-form input, body.dark-mode .contact-form textarea {
+      background-color: #444;
+      color: white;
+      border: 1px solid #fff;
+    }
+
+    .contact-form button {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 1em 2em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+
+    body.dark-mode .contact-form button {
+      background-color: #1baba6;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5em;
+      margin-top: 2em;
+    }
+
+    body.dark-mode .social-links a {
+      color: white;
+    }
+
+    body.dark-mode .social-links a:hover {
+      color: #1b5f73;
+    }
+
+    .map-container {
+      margin-top: 2em;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    #testimonials {
+      background-color: #6773f1;
+      padding: 4em 1em;
+      text-align: center;
+    }
+
+    body.dark-mode #testimonials {
+      background-color: #292c3e;
+    }
+
+    #testimonials h1 {
+      font-size: 3.5rem;
+    }
+
+    .testimonial-slider {
+      display: flex;
+      overflow: hidden;
+      justify-content: center;
+    }
+
+    .testimonial {
+      width: 80%;
+      max-width: 400px;
+      margin: 0 1em;
+      text-align: center;
+      background-color: #fff;
+      padding: 2em;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    }
+
+    body.dark-mode .testimonial {
+      background-color: #333;
+      color: white;
+    }
+
+    .testimonial p {
+      font-size: 1.1rem;
+      color: #555;
+    }
+
+    body.dark-mode .testimonial p {
+      color: white;
+    }
+
+    .testimonial span {
+      display: block;
+      margin-top: 1em;
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+
+    body.dark-mode .testimonial span {
+      color: white;
+    }
+
+    @media (max-width: 768px) {
+      .testimonial {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#services">Services</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+    <button class="theme-toggle" onclick="toggleTheme()">☀️</button>
+  </nav>
+
+  <header>
+    <h1>Welcome to <span class="animated-text"><span>Techxis</span></span></h1>
+    <p>Where Innovation meets Perfection!</p>
+    <a href="#contact" class="cta-button">How can we help you?</a>
+  </header>
+
+  <main>
+    <section id="services">
+      <h1>Our Services</h1>
+      <div class="card-grid">
+        <div class="card">
+          <h2>Web Development</h2>
+          <p>Building modern and responsive websites tailored to your needs.</p>
+        </div>
+        <div class="card">
+          <h2>App Development</h2>
+          <p>Creating powerful mobile applications for businesses and consumers.</p>
+        </div>
+        <div class="card">
+          <h2>UI/UX Design</h2>
+          <p>Designing intuitive and stunning user interfaces that users love.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <h1>Our Projects</h1>
+      <div class="card-grid">
+        <div class="card">
+          <h2>Bazaar e Khas</h2>
+          <p>Web development for a global e-commerce platform for selling and purchasing of products.</p>
+        </div>
+        <div class="card">
+          <h2>GoHospital</h2>
+          <p>Mobile app design for dealing with clients in the healthcare sector.</p>
+        </div>
+        <div class="card">
+          <h2>Passion Shoes</h2>
+          <p>UI/UX design for a shopify store for their shoe market.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h1>Contact Us</h1>
+      <form class="contact-form">
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+      <div class="social-links">
+        <a href="#">LinkedIn</a>
+        <a href="#">Twitter</a>
+        <a href="#">Instagram</a>
+      </div>
+    </section>
+
+    <section id="testimonials">
+      <h1>What our clients say</h1>
+      <div class="testimonial-slider">
+        <div class="testimonial">
+          <p>"Techxis transformed our business, providing exceptional services."</p>
+          <span>- John Doe</span>
+        </div>
+        <div class="testimonial">
+          <p>"A fantastic team with great customer support and top-notch work."</p>
+          <span>- Jane Smith</span>
+        </div>
+        <div class="testimonial">
+          <p>"Highly recommend Techxis for their professionalism and expertise."</p>
+          <span>- Mark Williams</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="map-container">
+      <!-- You can add a Google map here -->
+    </div>
+  </footer>
+
+  <script>
+    // Hero Section Animation (Text and Button)
+    gsap.from("header h1", {
+      opacity: 0,
+      y: -50,
+      duration: 1.5,
+      delay: 0.3,
+      ease: "power4.out"
+    });
+    gsap.from("header p", {
+      opacity: 0,
+      y: 20,
+      duration: 1.5,
+      delay: 0.5,
+      ease: "power4.out"
+    });
+    gsap.from(".cta-button", {
+      opacity: 0,
+      scale: 0.8,
+      duration: 1,
+      delay: 0.7,
+      ease: "power4.out"
+    });
+
+    // Smooth Scroll for Navigation
+    document.querySelectorAll('nav a').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        gsap.to(window, {
+          scrollTo: this.getAttribute('href'),
+          duration: 1,
+          onComplete: () => {
+            // After the scroll, trigger animations for the section
+            triggerSectionAnimations();
+          }
+        });
+      });
+    });
+
+    // Function to trigger animations on sections
+    function triggerSectionAnimations() {
+      gsap.from("#services h1", { opacity: 0, y: 50, duration: 1.5 });
+      gsap.from("#projects h1", { opacity: 0, y: 50, duration: 1.5 });
+      gsap.from("#contact h1", { opacity: 0, y: 50, duration: 1.5 });
+    }
+
+    // Testimonial Slider (Auto-scroll and Manual Navigation)
+    let currentIndex = 0;
+    const testimonials = document.querySelectorAll('.testimonial');
+    const totalTestimonials = testimonials.length;
+
+    // Function to move the testimonial slider
+    function moveSlider(direction) {
+      if (direction === 'next') {
+        currentIndex = (currentIndex + 1) % totalTestimonials;
+      } else if (direction === 'prev') {
+        currentIndex = (currentIndex - 1 + totalTestimonials) % totalTestimonials;
+      }
+      updateSlider();
+    }
+
+    function updateSlider() {
+      gsap.to('.testimonial', {
+        opacity: 0,
+        y: 20,
+        duration: 0.5,
+        ease: 'power2.out'
+      });
+
+      gsap.to(testimonials[currentIndex], {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        delay: 0.2,
+        ease: 'power2.out'
+      });
+    }
+
+    // Auto-scroll functionality for testimonial slider
+    function autoScrollTestimonials() {
+      moveSlider('next');
+    }
+
+    setInterval(autoScrollTestimonials, 5000);  // Auto scroll every 5 seconds
+
+    updateSlider(); // Initialize the first testimonial visibility
+
+    // Dark Mode Toggle
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      const themeButton = document.querySelector('.theme-toggle');
+      themeButton.textContent = document.body.classList.contains('dark-mode') ? '🌙' : '☀️';
+    }
+  </script>
+</body>
+</html>
